@@ -1,0 +1,22 @@
+Utility Scripts for xbmc
+
+clean_xbmc_library.sh           -   bash script that cleans video library
+
+files_not_in_xbmc_lib.py        -   lists video files that are in the tv/mov folders but not in the xbmc library
+
+music_update_xbmc_library.sh    -   update music lib
+
+notifyxbmc.sh                   -   show message $1 on xbmc
+
+sqlite_mysql_watched.py         -   updates episodes watched from sqlite db to mysql db
+
+torrent_added_xbmc.sh           -   deluge script to tell xbmc to do something when a torrent is added to deluge
+
+torrent_complete_xbmc.sh        -   deluge script that tells xbmc top rescan its library when a torrent is completed
+
+update_xbmc_library.sh          -   update the video library
+
+update_xbmc_music_library.sh    -   update the music library
+
+xbmc_recently_added.py          -   lists N most recently added episodes and/or movies
+

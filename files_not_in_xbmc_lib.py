@@ -2,22 +2,13 @@
 import os
 import MySQLdb
 
+#
+# customized version of Nathan Hoads missing-movie-viewer python script
+# will only work on my main xbmc pc
+#
+
+
 FILE_EXTENSIONS = ['mpg', 'mpeg', 'avi', 'flv', 'wmv', 'mkv', '264', '3g2', '3gp', 'ifo', 'mp4', 'mov', 'iso', 'ogm']
-
-def remove_duplicates(files):
-    # converting it to a set and back drops all duplicates
-    return list(set(files))
-
-def clean_name(text):
-    text = text.replace('%21', '!')
-    text = text.replace('%3a', ':')
-    text = text.replace('%5c', '\\')
-    text = text.replace('%2f', '/')
-    text = text.replace('%2c', ',')
-    text = text.replace('%5f', '_')
-    text = text.replace('%20', ' ')
-
-    return text
 
 def file_has_extensions(filename, extensions):
     # get the file extension, without a leading colon.
@@ -66,7 +57,6 @@ shares = [s.lower() for s in shares]
 shares.sort()
 
 physical = get_files('/media/twoTB1/videos/tv')
-physical = [p.lower() for p in physical]
 physical.sort()
 
 

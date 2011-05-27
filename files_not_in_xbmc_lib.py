@@ -57,6 +57,7 @@ shares = [s.lower() for s in shares]
 shares.sort()
 
 physical = get_files('/media/twoTB1/videos/tv')
+physical += get_files('/media/tv2')
 physical.sort()
 
 

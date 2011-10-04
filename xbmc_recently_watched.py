@@ -6,6 +6,7 @@ EP = False
 MOV = False
 PRINT_FILE_PATH = False
 RESULT_NUMBER = 25
+PADDING = 35
 
 switch = ['-m', '-e', '-n', '-f']
 for i in range(len(sys.argv)):
@@ -33,21 +34,23 @@ mysql_con = MySQLdb.connect (host = "localhost",user = "xbmc",passwd = "xbmc",db
 
 mc = mysql_con.cursor()
 if EP:
-    # (@)> - sql to get most recent episodes
-    mc.execute("select strTitle, c12, c13, c00, strPath, strFilename from episodeview order by idEpisode desc limit %d" % RESULT_NUMBER)
-    print "Recent Episodes:"
+    # (@)> - sql to get most recent episodes where playCount is not null order by lastPlayed
+    mc.execute("select lastPlayed, strTitle, c12, c13, c00 from episodeview where playCount is not null order by lastPlayed desc limit %d" % RESULT_NUMBER)
+    print "Recently watched episodes:"
     for m in mc:
-        prstr = "%s s%se%s: %s" % (m[0], m[1], m[2], m[3])
-        if PRINT_FILE_PATH: 
-            prstr = "%s s%se%s: %s\n\t%s/%s" % (m[0], m[1], m[2], m[3], m[4], m[5])
+        # stupid hack this is a clunky POS
+        timestamp = "%s:\t" % (m[0])
+        showname = m[1]
+        showname = showname.ljust(PADDING)
+        ep ="s%se%s:" % (m[2], m[3])
+        ep = ep.ljust(PADDING/2)
+        prstr = timestamp + showname + ep + m[4]
         print prstr
 
 if MOV:
     # (@)> - sql to get most recent movies
-    mc.execute("select c00, strPath, strFileName from movieview order by idMovie desc limit %d" % RESULT_NUMBER)
-    print "\nRecent Movies:"
+    mc.execute("select lastPlayed, c00 from movieview order by lastPlayed desc limit %d" % RESULT_NUMBER)
+    print "\nRecently Movies:"
     for m in mc:
-        prstr =  "%s" % (m[0])
-        if PRINT_FILE_PATH: 
-            prstr = "%s\n\t%s/%s" % (m[0], m[1], m[2])
+        prstr = "%s: %s" % (m[0], m[1])
         print prstr

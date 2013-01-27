@@ -30,7 +30,7 @@ if((not EP) and (not MOV)):
     print "\t-e: scan episodes"
     print "\t-n: number of items to display for each category"
     sys.exit()
-mysql_con = MySQLdb.connect (host = "localhost",user = "xbmc",passwd = "xbmc",db = "xbmc_video")
+mysql_con = MySQLdb.connect (host = "localhost",user = "xbmc",passwd = "xbmc",db = "xbmc_video60")
 
 mc = mysql_con.cursor()
 if EP:

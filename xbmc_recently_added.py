@@ -2,12 +2,14 @@
 import sys
 import MySQLdb
 
+# globals
 EP = False
 MOV = False
 PRINT_FILE_PATH = False
 RESULT_NUMBER = 25
+EP_FILTER = "idEpisode"
 
-switch = ['-m', '-e', '-n', '-f']
+switch = ['-m', '-e', '-n', '-f', '-a']
 for i in range(len(sys.argv)):
     if sys.argv[i] in switch:
         if sys.argv[i] == '-m':
@@ -16,6 +18,8 @@ for i in range(len(sys.argv)):
             EP = True
         if sys.argv[i] == '-f':
             PRINT_FILE_PATH = True
+        if sys.argv[i] == '-a':
+            EP_FILTER = 'c05'
         if sys.argv[i] == '-n':
             try:
                 RESULT_NUMBER = int(sys.argv[i+1])
@@ -28,13 +32,16 @@ if((not EP) and (not MOV)):
     print "\t-m: scan movies"
     print "\t-e: scan episodes"
     print "\t-n: number of items to display for each category"
+    print "\t-f: also print file path for each item"
+    print "\t-a: print/sort by date aired instead of date added"
     sys.exit()
-mysql_con = MySQLdb.connect (host = "localhost",user = "xbmc",passwd = "xbmc",db = "xbmc_video")
+mysql_con = MySQLdb.connect (host = "localhost",user = "xbmc",passwd = "xbmc",db = "xbmc_video60")
 
 mc = mysql_con.cursor()
 if EP:
     # (@)> - sql to get most recent episodes
-    mc.execute("select strTitle, c12, c13, c00, strPath, strFilename from episodeview order by idEpisode desc limit %d" % RESULT_NUMBER)
+    mc.execute("select strTitle, c12, c13, c00, strPath, strFilename from episodeview order by %s desc limit %d" % (EP_FILTER, RESULT_NUMBER))
+    print 'Using ep filter: ', EP_FILTER
     print "Recent Episodes:"
     for m in mc:
         prstr = "%s s%se%s: %s" % (m[0], m[1], m[2], m[3])

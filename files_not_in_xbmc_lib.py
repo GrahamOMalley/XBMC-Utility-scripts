@@ -35,7 +35,7 @@ def get_files(path):
 physical = get_files('/media/oneTB/videos/movies')
 physical.sort()
 shares = []
-mysql_con = MySQLdb.connect (host = "localhost",user = "xbmc",passwd = "xbmc",db = "xbmc_video")
+mysql_con = MySQLdb.connect (host = "localhost",user = "xbmc",passwd = "xbmc",db = "xbmc_video60")
 mc = mysql_con.cursor()
 mc.execute("""select strPath, strFilename from movieview""")
 for m in mc:

@@ -1,12 +1,11 @@
 #! /usr/bin/env python
 import json
-import httplib, urllib
-import sys
+import urllib
 
 
 # this script currently just handles the first item in the playlist, this is incorrect wont work for playlists > 1 item
 
-url = 'http://localhost:8888'
+url = 'http://localhost:8899'
 jsonrpcurl = url + '/jsonrpc'
 
 #player_data = json.dumps({'jsonrpc': "2.0", 'method': "Player.GetActivePlayers", 'id': "1"})

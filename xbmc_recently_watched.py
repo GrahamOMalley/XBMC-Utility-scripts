@@ -1,56 +1,44 @@
 #! /usr/bin/env python
-import sys
 import MySQLdb
+import argparse
+from gomXBMCTools import formatNoAsStr
+    # code...
+parser = argparse.ArgumentParser(description='Prints most recently watched episodes and/or movies')
+parser.add_argument('-e', '--episode', action="store_true", default=False, required=False, help='Scan episodes')
+parser.add_argument('-m', '--movies', action="store_true", default=False, required=False, help='Scan movies')
+parser.add_argument('-f', '--file_path', action="store_true", default=False, required=False, help='Print out file path')
+parser.add_argument('-n', '--num', type=int, default=25, required=False, help='number of items to print')
+parser.add_argument('-p', '--padding', type=int, default=35, required=False, help='column padding value')
+args = parser.parse_args()
 
-EP = False
-MOV = False
-PRINT_FILE_PATH = False
-RESULT_NUMBER = 25
-PADDING = 35
-
-switch = ['-m', '-e', '-n', '-f']
-for i in range(len(sys.argv)):
-    if sys.argv[i] in switch:
-        if sys.argv[i] == '-m':
-            MOV = True
-        if sys.argv[i] == '-e':
-            EP = True
-        if sys.argv[i] == '-f':
-            PRINT_FILE_PATH = True
-        if sys.argv[i] == '-n':
-            try:
-                RESULT_NUMBER = int(sys.argv[i+1])
-            except:
-                print "usage example: -n 5"
-                sys.exit()
-
-if((not EP) and (not MOV)):
-    print "Usage: %s (-m) (-e) (-n int)" % sys.argv[0]
-    print "\t-m: scan movies"
-    print "\t-e: scan episodes"
-    print "\t-n: number of items to display for each category"
-    sys.exit()
 mysql_con = MySQLdb.connect (host = "localhost",user = "xbmc",passwd = "xbmc",db = "xbmc_video60")
 
 mc = mysql_con.cursor()
-if EP:
+if args.episode:
+    sortedEpList = []
     # (@)> - sql to get most recent episodes where playCount is not null order by lastPlayed
-    mc.execute("select lastPlayed, strTitle, c12, c13, c00 from episodeview where playCount is not null order by lastPlayed desc limit %d" % RESULT_NUMBER)
+    mc.execute("select lastPlayed, strTitle, c12, c13, c00 from episodeview where playCount is not null order by lastPlayed desc limit %d" % args.num)
     print "Recently watched episodes:"
     for m in mc:
         # stupid hack this is a clunky POS
-        timestamp = "%s:\t" % (m[0])
+        timestamp = "%s:    " % (m[0])
         showname = m[1]
-        showname = showname.ljust(PADDING)
-        ep ="s%se%s:" % (m[2], m[3])
-        ep = ep.ljust(PADDING/2)
+        showname = showname.ljust(args.padding)
+        ep ="s%se%s:" % (formatNoAsStr(m[2]), formatNoAsStr(m[3]))
+        ep = ep.ljust(args.padding/2)
         prstr = timestamp + showname + ep + m[4]
-        print prstr
+        sortedEpList.append(prstr)
+    sortedEpList.sort()
+    for i in sortedEpList: print i
 
-if MOV:
+if args.movies:
+    movieList= []
     # (@)> - sql to get most recent movies
-    mc.execute("select lastPlayed, c00 from movieview order by lastPlayed desc limit %d" % RESULT_NUMBER)
-    print "\nRecently Movies:"
+    mc.execute("select lastPlayed, c00 from movieview order by lastPlayed desc limit %d" % args.num)
+    print "\nRecently Watched Movies:"
     for m in mc:
-        prstr = "%s: %s" % (m[0], m[1])
-        print prstr
+        timestamp = "%s:\t" % (m[0])
+        prstr = "%s:    %s" % (m[0], m[1])
+        movieList.append(prstr)
+    movieList.sort()
+    for i in movieList: print i

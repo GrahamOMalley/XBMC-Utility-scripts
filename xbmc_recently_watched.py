@@ -11,7 +11,7 @@ parser.add_argument('-n', '--num', type=int, default=25, required=False, help='n
 parser.add_argument('-p', '--padding', type=int, default=35, required=False, help='column padding value')
 args = parser.parse_args()
 
-mysql_con = MySQLdb.connect (host = "localhost",user = "xbmc",passwd = "xbmc",db = "xbmc_video60")
+mysql_con = MySQLdb.connect (host = "localhost",user = "xbmc",passwd = "xbmc",db = "MyVideos75")
 
 mc = mysql_con.cursor()
 if args.episode:

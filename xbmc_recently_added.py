@@ -14,7 +14,7 @@ args = parser.parse_args()
 
 EP_FILTER = "c05" if args.aired else "idEpisode"
 
-mysql_con = MySQLdb.connect (host = "localhost",user = "xbmc",passwd = "xbmc",db = "xbmc_video60")
+mysql_con = MySQLdb.connect (host = "localhost",user = "xbmc",passwd = "xbmc",db = "MyVideos75")
 
 mc = mysql_con.cursor()
 if args.episode:
@@ -47,4 +47,5 @@ if args.movies:
         prstr = "%s (%s)" % (m[0], m[3])
         #prstr = "%s:    %s" % (m[0], m[1])
         movieList.append(prstr)
+    movieList.reverse()
     for i in movieList: print i

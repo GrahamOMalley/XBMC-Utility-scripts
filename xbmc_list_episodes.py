@@ -13,7 +13,7 @@ args = parser.parse_args()
 sortedEpList = []
 actual_showname = ""
 
-mysql_con = MySQLdb.connect (host = "localhost",user = "xbmc",passwd = "xbmc",db = "xbmc_video60")
+mysql_con = MySQLdb.connect (host = "localhost",user = "xbmc",passwd = "xbmc",db = "MyVideos75")
 
 mc = mysql_con.cursor()
 mc.execute("select strTitle, c12, c13, c00, strPath, strFilename from episodeview where strTitle like '%" + args.show + "%'" )
